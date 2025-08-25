@@ -10,7 +10,7 @@ function App() {
   useEffect(() => {
     const fetchLatestRate = async () => {
       try {
-        const res = await axios.get("/api/rate"); // Vite proxy handles port
+        const res = await axios.get("/api/rate"); // Vite proxy
         if (res.data.length > 0) setRate(res.data[0]);
       } catch (err) {
         console.error("Error fetching rate:", err);
@@ -27,45 +27,49 @@ function App() {
     setResult(converted);
   };
 
-  if (!rate) return <p>Loading latest rate...</p>;
+  if (!rate) return <p className="text-center mt-10 text-gray-500">Loading latest rate...</p>;
 
   return (
-    <div className="max-w-md mx-auto mt-20 p-4 text-center border rounded shadow">
-      <h2 className="text-2xl mb-4">💱 Money Exchange</h2>
+    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
+      <div className="bg-white p-6 rounded-xl shadow-lg w-full max-w-md">
+        <h2 className="text-3xl font-bold mb-6 text-center text-blue-600">💱 Money Exchange</h2>
 
-      <input
-        className="border p-2 w-full mb-2"
-        type="number"
-        placeholder="Enter amount"
-        value={amount}
-        onChange={(e) => setAmount(e.target.value)}
-      />
+        <input
+          type="number"
+          placeholder="Enter amount"
+          value={amount}
+          onChange={(e) => setAmount(e.target.value)}
+          className="border border-gray-300 p-3 w-full rounded mb-4 focus:outline-none focus:ring-2 focus:ring-blue-400"
+        />
 
-      <select
-        className="border p-2 w-full mb-2"
-        value={direction}
-        onChange={(e) => setDirection(e.target.value)}
-      >
-        <option value="MMKtoTHB">ကျပ်ပေး</option>
-        <option value="THBtoMMK">ဘတ်ပေး</option>
-      </select>
+        <select
+          value={direction}
+          onChange={(e) => setDirection(e.target.value)}
+          className="border border-gray-300 p-3 w-full rounded mb-4 focus:outline-none focus:ring-2 focus:ring-blue-400"
+        >
+          <option value="MMKtoTHB">ကျပ်ပေး ➝ ဘတ်</option>
+          <option value="THBtoMMK">ဘတ်ပေး ➝ ကျပ်</option>
+        </select>
 
-      <button
-        className="bg-blue-500 text-white px-4 py-2 rounded mb-4"
-        onClick={handleConvert}
-      >
-        Convert
-      </button>
+        <button
+          onClick={handleConvert}
+          className="bg-blue-500 hover:bg-blue-600 transition text-white font-semibold px-5 py-3 rounded w-full mb-4"
+        >
+          Convert
+        </button>
 
-      {result && (
-        <h3 className="text-xl mb-2">
-          Result: {result} {direction === "MMKtoTHB" ? "THB" : "MMK"}
-        </h3>
-      )}
+        {result && (
+          <h3 className="text-xl font-medium mb-3 text-center text-gray-700">
+            Result: {result} {direction === "MMKtoTHB" ? "THB" : "MMK"}
+          </h3>
+        )}
 
-      <p>
-        💹 Latest Rate: 1 THB => {rate.thbToMmk} MMK(ဘတ်ပေး), 1 THB => {rate.mmkToThb} MMK (ကျပ်ပေး)
-      </p>
+        <div className="text-center text-gray-600 text-sm">
+          💹 Latest Rate:<br />
+          1 THB => {rate.thbToMmk} MMK (ဘတ်ပေး),<br />
+          1 MMK => {rate.mmkToThb} THB (ကျပ်ပေး)
+        </div>
+      </div>
     </div>
   );
 }
